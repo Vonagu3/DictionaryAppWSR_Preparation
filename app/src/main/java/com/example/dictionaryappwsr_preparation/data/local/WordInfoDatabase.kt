@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-    entities = [WordInfoEntity::class.java],
+    entities = [WordInfoEntity::class],
     version = 1
 )
 @TypeConverters(Converter::class)
