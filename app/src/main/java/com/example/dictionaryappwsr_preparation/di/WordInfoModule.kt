@@ -1,6 +1,12 @@
 package com.example.dictionaryappwsr_preparation.di
 
+import android.app.Application
+import androidx.room.Room
+import com.example.dictionaryappwsr_preparation.data.local.Converter
+import com.example.dictionaryappwsr_preparation.data.local.WordInfoDatabase
 import com.example.dictionaryappwsr_preparation.data.remote.DictionaryApi
+import com.example.dictionaryappwsr_preparation.data.utils.GsonParser
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,5 +37,15 @@ object WordInfoModule {
             .client(httpClient.build())
             .build()
             .create(DictionaryApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWordInfoDatabase(app: Application): WordInfoDatabase {
+        return Room
+            .databaseBuilder(app, WordInfoDatabase::class.java, "word_db")
+            .addTypeConverter(Converter(GsonParser(Gson())))
+            .build()
+
     }
 }
