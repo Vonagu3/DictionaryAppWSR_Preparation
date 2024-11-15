@@ -5,7 +5,9 @@ import androidx.room.Room
 import com.example.dictionaryappwsr_preparation.data.local.Converter
 import com.example.dictionaryappwsr_preparation.data.local.WordInfoDatabase
 import com.example.dictionaryappwsr_preparation.data.remote.DictionaryApi
+import com.example.dictionaryappwsr_preparation.data.repository.WordInfoRepositoryImpl
 import com.example.dictionaryappwsr_preparation.data.utils.GsonParser
+import com.example.dictionaryappwsr_preparation.domain.repository.WordInfoRepository
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -46,6 +48,11 @@ object WordInfoModule {
             .databaseBuilder(app, WordInfoDatabase::class.java, "word_db")
             .addTypeConverter(Converter(GsonParser(Gson())))
             .build()
+    }
 
+    @Provides
+    @Singleton
+    fun provideWordInfoRepository (db: WordInfoDatabase, api: DictionaryApi): WordInfoRepository {
+        return WordInfoRepositoryImpl(api, db.dao)
     }
 }
